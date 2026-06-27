@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Prepared Space — Montessori Transition Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --root:#27500A;--ground:#3B6D11;--leaf:#639922;--morning:#EAF3DE;
+  --earth:#854F0B;--clay:#BA7517;--paper:#FAF6ED;--ink:#1A1A14;
+  --ink-soft:#3A3A2E;--ink-mute:#7A7A68;--border:#D8D4C4;
+  --plane-1:#FDF6E8;--plane-1b:#BA7517;
+  --plane-2a:#EEEDFE;--plane-2ab:#534AB7;
+  --plane-2b:#FFF3E0;--plane-2bb:#C17000;
+  --display:'Cormorant Garamond',Georgia,serif;
+  --body:'Inter',system-ui,sans-serif;
+  --radius:16px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.6;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(250,246,237,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.nav-brand{font-family:var(--display);font-size:1.15rem;font-weight:500;color:var(--root);letter-spacing:0.01em;text-decoration:none;}
+.nav-brand span{color:var(--clay);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-size:0.82rem;color:var(--ink-mute);text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--root);}
+.nav-cta{background:var(--root);color:#fff;padding:8px 20px;border-radius:99px;font-size:0.82rem;font-weight:500;text-decoration:none;letter-spacing:0.03em;transition:background .2s;}
+.nav-cta:hover{background:var(--ground);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 5vw 80px;text-align:center;position:relative;overflow:hidden;}
+.hero-eyebrow{font-size:0.78rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--clay);margin-bottom:28px;opacity:0;animation:fadeUp .8s .2s forwards;}
+.hero-headline{font-family:var(--display);font-size:clamp(2.8rem,6vw,5.2rem);font-weight:400;line-height:1.15;color:var(--ink);max-width:820px;margin:0 auto 28px;opacity:0;animation:fadeUp .9s .35s forwards;}
+.hero-headline em{font-style:italic;color:var(--root);}
+.hero-sub{font-size:clamp(1rem,1.6vw,1.15rem);color:var(--ink-soft);max-width:580px;margin:0 auto 48px;line-height:1.7;font-weight:300;opacity:0;animation:fadeUp .9s .5s forwards;}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .9s .65s forwards;}
+.btn-primary{background:var(--root);color:#fff;padding:14px 32px;border-radius:99px;font-size:0.9rem;font-weight:500;text-decoration:none;letter-spacing:0.02em;transition:background .2s,transform .15s;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary:hover{background:var(--ground);transform:translateY(-1px);}
+.btn-ghost{border:1.5px solid var(--border);color:var(--ink-soft);padding:14px 32px;border-radius:99px;font-size:0.9rem;font-weight:400;text-decoration:none;letter-spacing:0.02em;transition:border-color .2s,color .2s,transform .15s;}
+.btn-ghost:hover{border-color:var(--root);color:var(--root);transform:translateY(-1px);}
+.hero-bg{position:absolute;inset:0;pointer-events:none;z-index:-1;overflow:hidden;}
+.hero-bg-leaf{position:absolute;opacity:.06;}
+
+/* CROSSING — signature element */
+.crossing{padding:80px 5vw;background:var(--paper);}
+.crossing-inner{max-width:900px;margin:0 auto;}
+.crossing-label{font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:48px;text-align:center;}
+.planes-track{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:stretch;position:relative;}
+.plane-card{border-radius:var(--radius);padding:28px 24px;position:relative;overflow:hidden;}
+.plane-card::before{content:'';position:absolute;inset:0;opacity:.06;pointer-events:none;}
+.plane-ch{background:var(--plane-1);border:1.5px solid rgba(186,117,23,.25);}
+.plane-le{background:var(--plane-2a);border:1.5px solid rgba(83,74,183,.25);}
+.plane-ue{background:var(--plane-2b);border:1.5px solid rgba(193,112,0,.22);}
+.plane-tag{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;}
+.plane-ch .plane-tag{color:var(--plane-1b);}
+.plane-le .plane-tag{color:var(--plane-2ab);}
+.plane-ue .plane-tag{color:var(--plane-2bb);}
+.plane-age{font-family:var(--display);font-size:1.5rem;font-weight:500;margin-bottom:4px;color:var(--ink);}
+.plane-name{font-size:0.85rem;font-weight:500;color:var(--ink-soft);margin-bottom:14px;}
+.plane-mode{font-size:0.9rem;font-weight:600;margin-bottom:10px;}
+.plane-ch .plane-mode{color:var(--earth);}
+.plane-le .plane-mode{color:var(--plane-2ab);}
+.plane-ue .plane-mode{color:var(--plane-2bb);}
+.plane-desc{font-size:0.82rem;color:var(--ink-mute);line-height:1.6;}
+.plane-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 8px;gap:6px;}
+.arrow-line{width:2px;height:40px;background:linear-gradient(to bottom,var(--border),var(--leaf));border-radius:1px;position:relative;overflow:hidden;}
+.arrow-fill{position:absolute;top:0;left:0;right:0;height:0%;background:var(--leaf);border-radius:1px;transition:height 1.2s ease;}
+.arrow-line.animated .arrow-fill{height:100%;}
+.arrow-head{font-size:14px;color:var(--leaf);}
+.bridge-label{font-size:0.68rem;color:var(--leaf);font-weight:500;letter-spacing:0.06em;text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg);}
+
+/* GAP STATEMENT */
+.gap-section{padding:100px 5vw;background:#fff;}
+.gap-inner{max-width:760px;margin:0 auto;}
+.gap-overline{font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--clay);margin-bottom:24px;}
+.gap-headline{font-family:var(--display);font-size:clamp(1.9rem,3.5vw,2.8rem);font-weight:400;line-height:1.25;color:var(--ink);margin-bottom:32px;}
+.gap-headline em{font-style:italic;color:var(--root);}
+.gap-body{font-size:1rem;color:var(--ink-soft);line-height:1.8;margin-bottom:20px;font-weight:300;}
+.gap-pull{font-family:var(--display);font-size:clamp(1.2rem,2.2vw,1.55rem);font-style:italic;color:var(--root);border-left:3px solid var(--leaf);padding-left:24px;margin:40px 0;line-height:1.4;font-weight:400;}
+
+/* THREE SERVED */
+.served{padding:100px 5vw;background:var(--morning);}
+.served-inner{max-width:1000px;margin:0 auto;}
+.section-eyebrow{font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:16px;text-align:center;}
+.section-title{font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:400;text-align:center;color:var(--ink);margin-bottom:56px;line-height:1.2;}
+.section-title em{font-style:italic;color:var(--root);}
+.served-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+.served-card{background:#fff;border-radius:var(--radius);padding:36px 32px;border:1px solid var(--border);position:relative;overflow:hidden;}
+.served-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.served-card.child::after{background:linear-gradient(to right,var(--leaf),var(--ground));}
+.served-card.adult::after{background:linear-gradient(to right,var(--plane-2ab),#8B85E0);}
+.served-card.parent::after{background:linear-gradient(to right,var(--clay),var(--earth));}
+.served-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:20px;}
+.child .served-icon{background:var(--morning);}
+.adult .served-icon{background:var(--plane-2a);}
+.parent .served-icon{background:var(--plane-1);}
+.served-who{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px;}
+.served-title{font-family:var(--display);font-size:1.4rem;font-weight:500;color:var(--ink);margin-bottom:12px;}
+.served-desc{font-size:0.88rem;color:var(--ink-mute);line-height:1.7;}
+.served-detail{margin-top:20px;padding-top:20px;border-top:1px solid var(--border);font-size:0.82rem;color:var(--ink-soft);line-height:1.6;}
+
+/* TOOLS */
+.tools{padding:100px 5vw;background:var(--paper);}
+.tools-inner{max-width:900px;margin:0 auto;}
+.tools-list{display:flex;flex-direction:column;gap:16px;margin-top:48px;}
+.tool-row{background:#fff;border-radius:var(--radius);padding:28px 32px;border:1px solid var(--border);display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;transition:border-color .2s,transform .15s;}
+.tool-row:hover{border-color:var(--leaf);transform:translateY(-2px);}
+.tool-row.current{border-color:var(--leaf);background:var(--morning);}
+.tool-num{font-family:var(--display);font-size:2rem;font-weight:400;color:var(--border);line-height:1;width:40px;text-align:center;}
+.tool-row.current .tool-num{color:var(--leaf);}
+.tool-info{}
+.tool-plane{font-size:0.68rem;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:4px;}
+.tool-name{font-family:var(--display);font-size:1.25rem;font-weight:500;color:var(--ink);margin-bottom:4px;}
+.tool-desc{font-size:0.84rem;color:var(--ink-mute);line-height:1.6;}
+.tool-tag{font-size:0.72rem;font-weight:500;padding:4px 12px;border-radius:99px;white-space:nowrap;align-self:flex-start;}
+.tag-built{background:var(--morning);color:var(--root);border:1px solid rgba(99,153,34,.3);}
+.tag-next{background:var(--plane-2a);color:var(--plane-2ab);border:1px solid rgba(83,74,183,.2);}
+.tag-coming{background:var(--plane-1);color:var(--earth);border:1px solid rgba(186,117,23,.2);}
+
+/* MISSION */
+.mission{padding:120px 5vw;background:var(--root);color:#fff;}
+.mission-inner{max-width:760px;margin:0 auto;text-align:center;}
+.mission-label{font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:32px;}
+.mission-text{font-family:var(--display);font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:400;line-height:1.45;color:#fff;margin-bottom:48px;}
+.mission-text em{font-style:italic;color:var(--morning);}
+.mission-close{font-family:var(--display);font-size:1rem;font-style:italic;color:rgba(255,255,255,.6);margin-bottom:56px;line-height:1.6;}
+.mission-trio{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-bottom:56px;}
+.trio-item{text-align:center;}
+.trio-word{font-family:var(--display);font-size:1.25rem;font-weight:500;color:var(--morning);}
+.trio-sub{font-size:0.75rem;color:rgba(255,255,255,.5);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px;}
+.trio-dot{font-size:1.5rem;color:rgba(255,255,255,.2);align-self:center;}
+.mission-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-light{background:#fff;color:var(--root);padding:14px 32px;border-radius:99px;font-size:0.9rem;font-weight:500;text-decoration:none;transition:background .2s,transform .15s;}
+.btn-light:hover{background:var(--morning);transform:translateY(-1px);}
+.btn-ghost-light{border:1.5px solid rgba(255,255,255,.3);color:rgba(255,255,255,.8);padding:14px 32px;border-radius:99px;font-size:0.9rem;font-weight:400;text-decoration:none;transition:border-color .2s,color .2s,transform .15s;}
+.btn-ghost-light:hover{border-color:#fff;color:#fff;transform:translateY(-1px);}
+
+/* FOOTER */
+footer{padding:48px 5vw;background:var(--ink);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.footer-brand{font-family:var(--display);font-size:1rem;color:rgba(255,255,255,.6);letter-spacing:0.02em;}
+.footer-brand span{color:rgba(255,255,255,.3);}
+.footer-cert{font-size:0.75rem;color:rgba(255,255,255,.35);letter-spacing:0.04em;}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .planes-track{grid-template-columns:1fr;gap:12px;}
+  .plane-arrow{flex-direction:row;padding:8px 0;writing-mode:horizontal-tb;}
+  .arrow-line{width:40px;height:2px;}
+  .arrow-fill{height:100%;width:0%;transition:width 1.2s ease;}
+  .arrow-line.animated .arrow-fill{width:100%;height:100%;}
+  .bridge-label{writing-mode:horizontal-tb;transform:none;}
+  .nav-links{display:none;}
+  .tools-inner .tool-row{grid-template-columns:1fr;gap:12px;}
+  .tool-num{display:none;}
+  footer{flex-direction:column;text-align:center;}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-brand">The <span>Prepared</span> Space</a>
+  <ul class="nav-links">
+    <li><a href="#tools">tools</a></li>
+    <li><a href="#mission">mission</a></li>
+    <li><a href="#contact">connect</a></li>
+  </ul>
+  <a href="#tools" class="nav-cta">explore the tools</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <svg class="hero-bg-leaf" style="width:600px;top:-80px;right:-120px;" viewBox="0 0 600 600"><path d="M80 520 C80 200 200 80 520 60 C500 300 300 480 80 520Z" fill="var(--leaf)"/></svg>
+    <svg class="hero-bg-leaf" style="width:300px;bottom:-60px;left:-60px;" viewBox="0 0 300 300"><path d="M40 260 C40 100 100 40 260 30 C250 150 150 240 40 260Z" fill="var(--clay)"/></svg>
+  </div>
+  <p class="hero-eyebrow">The Prepared Space &nbsp;·&nbsp; Montessori Transition Tools</p>
+  <h1 class="hero-headline">
+    The crossing from Montessori to elementary<br>
+    should be <em>smooth, prepared, and joyful.</em>
+  </h1>
+  <p class="hero-sub">
+    Digital tools built from inside Montessori pedagogy — for the child crossing the threshold, the adult who cannot stop the room, and the parent who wants to understand what is unfolding.
+  </p>
+  <div class="hero-actions">
+    <a href="#tools" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      See the tools
+    </a>
+    <a href="#mission" class="btn-ghost">Our mission</a>
+  </div>
+</section>
+
+<!-- PLANES -->
+<section class="crossing" id="planes">
+  <div class="crossing-inner">
+    <p class="crossing-label reveal">Three planes of development &nbsp;·&nbsp; One prepared crossing</p>
+    <div class="planes-track reveal">
+
+      <div class="plane-card plane-ch">
+        <p class="plane-tag">plane one</p>
+        <p class="plane-age">3 – 6</p>
+        <p class="plane-name">Children's House</p>
+        <p class="plane-mode">🌱 Reality-based</p>
+        <p class="plane-desc">The absorbent mind takes in the world exactly as it is. Sensitive periods. Concrete, tangible, real. The phonetic explosion happens here — 100% decodable, grounded in real objects and real sounds.</p>
+      </div>
+
+      <div class="plane-arrow" aria-hidden="true">
+        <div class="arrow-line" id="arrow1"><div class="arrow-fill"></div></div>
+        <span class="bridge-label">bridge</span>
+        <div class="arrow-head">↓</div>
+      </div>
+
+      <div class="plane-card plane-le">
+        <p class="plane-tag">plane two · lower</p>
+        <p class="plane-age">6 – 9</p>
+        <p class="plane-name">Lower Elementary</p>
+        <p class="plane-mode">✨ Imagination-based</p>
+        <p class="plane-desc">The reasoning mind awakens. The child understands through story, image, and wonder. The Great Lessons ignite the cosmic curriculum. Reading must serve the imagination — never interrupt it.</p>
+      </div>
+
+      <div class="plane-arrow" aria-hidden="true">
+        <div class="arrow-line" id="arrow2"><div class="arrow-fill"></div></div>
+        <span class="bridge-label">deepen</span>
+        <div class="arrow-head">↓</div>
+      </div>
+
+      <div class="plane-card plane-ue">
+        <p class="plane-tag">plane two · upper</p>
+        <p class="plane-age">9 – 12</p>
+        <p class="plane-name">Upper Elementary</p>
+        <p class="plane-mode">🔭 Abstraction-based</p>
+        <p class="plane-desc">The logical and moral mind. The child reasons from principles, classifies systems, seeks the why beneath everything. Reading must be fully automatic so attention belongs entirely to ideas.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- THE GAP -->
+<section class="gap-section">
+  <div class="gap-inner">
+    <p class="gap-overline reveal">The gap nobody has named</p>
+    <h2 class="gap-headline reveal">
+      The elementary adult works with a mixed-age group spanning <em>two developmental orientations</em> in the same room, at the same time.
+    </h2>
+    <p class="gap-body reveal">
+      They are simultaneously presenting imagination-led work to the 6–9 child and abstraction-led work to the 9–12 child. A newly arrived child from the Children's House — still rooted in reality, needing bridge skills — quietly falls between the two.
+    </p>
+    <p class="gap-body reveal">
+      The Montessori adult doesn't always know what the elementary environment requires. The elementary adult doesn't know what the child already carries. And the parent, watching from outside both environments, cannot see the extraordinary progress quietly unfolding — so anxiety fills the space where wonder should be.
+    </p>
+    <blockquote class="gap-pull reveal">
+      The elementary adult should never have to choose between the child who needs phonics consolidation and the child who is ready to work through imagination.
+    </blockquote>
+    <p class="gap-body reveal">
+      Our tools exist in that gap. They give the child the bridge skills they need to cross each threshold smoothly — vowel pairs, digraphs, trigraphs, r-controlled vowels, phonograms, double terminal consonants — through joy, repetition, and independence. Always self-correcting. Always at the child's own pace. Always freeing the adult for what only the adult can do.
+    </p>
+  </div>
+</section>
+
+<!-- THREE SERVED -->
+<section class="served" id="served">
+  <div class="served-inner">
+    <p class="section-eyebrow reveal">Three essential people</p>
+    <h2 class="section-title reveal">Every tool serves <em>all three.</em></h2>
+    <div class="served-grid">
+      <div class="served-card child reveal">
+        <div class="served-icon">🌿</div>
+        <p class="served-who">first & always</p>
+        <h3 class="served-title">The Child</h3>
+        <p class="served-desc">Tools that consolidate bridge skills through joy, repetition, and independence. Grounded in reality at 3–6. Carried through imagination at 6–9. Fully automatic at 9–12 so the reasoning mind is free for abstraction and inquiry.</p>
+        <p class="served-detail">Self-correcting. No scores. No timers. No rewards. The child returns by choice — because the work itself is satisfying.</p>
+      </div>
+      <div class="served-card adult reveal">
+        <div class="served-icon">📐</div>
+        <p class="served-who">supported</p>
+        <h3 class="served-title">The Adult</h3>
+        <p class="served-desc">Tools that work independently alongside the mixed-age room. The Montessori adult prepares the child for crossing. The elementary adult receives them already ready. No time lost. No choice to make.</p>
+        <p class="served-detail">The adult remains free to do what only the adult can do — present the cosmic curriculum, light the imagination, guide the reasoning mind.</p>
+      </div>
+      <div class="served-card parent reveal">
+        <div class="served-icon">🌸</div>
+        <p class="served-who">informed</p>
+        <h3 class="served-title">The Parent</h3>
+        <p class="served-desc">A window into what is actually happening. Most parents have no reference point for the method — so the dramatic progress their child is making is invisible to them, and anxiety fills that silence.</p>
+        <p class="served-detail">Our tools give parents resources they can trust, that stay true to the method, that let them recognise what their child is quietly achieving at each plane of development.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="tools" id="tools">
+  <div class="tools-inner">
+    <p class="section-eyebrow reveal">The tool suite</p>
+    <h2 class="section-title reveal" style="text-align:left;">From <em>phonetic explosion</em><br>to elementary abstraction.</h2>
+    <div class="tools-list">
+
+      <div class="tool-row current reveal">
+        <span class="tool-num">1</span>
+        <div class="tool-info">
+          <p class="tool-plane" style="color:var(--ground);">Plane 1 exit · Children's House → Elementary threshold</p>
+          <p class="tool-name">Sound Pond</p>
+          <p class="tool-desc">100% decodable sentences. Word-by-word read-aloud. Self-paced progression. No rewards, no timers — the child reads independently while the adult remains free for the room. The starting point of the bridge.</p>
+        </div>
+        <span class="tool-tag tag-built">Available now</span>
+      </div>
+
+      <div class="tool-row reveal">
+        <span class="tool-num">2</span>
+        <div class="tool-info">
+          <p class="tool-plane" style="color:var(--plane-2ab);">Plane 2a · Lower elementary · Imagination-based · 6–9</p>
+          <p class="tool-name">Vowel Bridge</p>
+          <p class="tool-desc">Vowel pairs, digraphs, and trigraphs delivered through story and imagination — because the 6–9 child cannot consolidate through drill. The reasoning mind needs narrative. Self-correcting and independent.</p>
+        </div>
+        <span class="tool-tag tag-next">Coming next</span>
+      </div>
+
+      <div class="tool-row reveal">
+        <span class="tool-num">3</span>
+        <div class="tool-info">
+          <p class="tool-plane" style="color:var(--plane-2ab);">Plane 2a completion · Lower elementary · 6–9</p>
+          <p class="tool-name">Phonogram Path</p>
+          <p class="tool-desc">R-controlled vowels, phonograms, and double terminal consonants — the final bridge skills before the child is fully elementary-ready. Presented through impressionistic contexts that honour the 6–9 imagination.</p>
+        </div>
+        <span class="tool-tag tag-coming">In development</span>
+      </div>
+
+      <div class="tool-row reveal">
+        <span class="tool-num">4</span>
+        <div class="tool-info">
+          <p class="tool-plane" style="color:var(--plane-2bb);">Plane 2b · Upper elementary · Abstraction-based · 9–12</p>
+          <p class="tool-name">Pattern & Reason</p>
+          <p class="tool-desc">Etymology, morphology, word families, spelling logic — the patterns the 9–12 mind is ready to classify and reason about. Reading becomes fully automatic so thinking can take over completely.</p>
+        </div>
+        <span class="tool-tag tag-coming">In development</span>
+      </div>
+
+      <div class="tool-row reveal">
+        <span class="tool-num">5</span>
+        <div class="tool-info">
+          <p class="tool-plane" style="color:var(--ground);">All planes · The adult & the parent</p>
+          <p class="tool-name">The Companion</p>
+          <p class="tool-desc">Bridges the communication gap between the Montessori and elementary environments. The Montessori adult sees what the child has consolidated. The elementary adult receives the child knowing exactly where they are. The parent sees what is actually unfolding.</p>
+        </div>
+        <span class="tool-tag tag-coming">In development</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission" id="mission">
+  <div class="mission-inner">
+    <p class="mission-label reveal">Our mission</p>
+    <p class="mission-text reveal">
+      The Prepared Space builds digital tools for the most underserved moment in a Montessori child's journey — the crossing from the <em>reality-based</em> world of the Children's House into the <em>imagination-led</em> world of lower elementary, and onward into the <em>abstraction</em> of upper elementary.
+    </p>
+    <p class="mission-close reveal">
+      The child arrives ready. The adult remains free. The parent sees what is actually happening.
+    </p>
+    <div class="mission-trio reveal">
+      <div class="trio-item">
+        <p class="trio-word">The child.</p>
+        <p class="trio-sub">first, always</p>
+      </div>
+      <span class="trio-dot">·</span>
+      <div class="trio-item">
+        <p class="trio-word">The adult.</p>
+        <p class="trio-sub">supported</p>
+      </div>
+      <span class="trio-dot">·</span>
+      <div class="trio-item">
+        <p class="trio-word">The parent.</p>
+        <p class="trio-sub">informed</p>
+      </div>
+    </div>
+    <div class="mission-actions reveal">
+      <a href="#tools" class="btn-light">Try Sound Pond</a>
+      <a href="#contact" class="btn-ghost-light" id="contact">Connect with us</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-brand">The <span>Prepared</span> Space <span>·</span> Montessori Transition Tools</p>
+  <p class="footer-cert">IMTC & IMTC-E Certified &nbsp;·&nbsp; Software Engineer &nbsp;·&nbsp; Built from inside the method</p>
+</footer>
+
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Animate bridge arrows when planes section visible
+      if (e.target.classList.contains('planes-track')) {
+        setTimeout(() => {
+          document.querySelectorAll('.arrow-line').forEach(l => l.classList.add('animated'));
+        }, 400);
+      }
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
